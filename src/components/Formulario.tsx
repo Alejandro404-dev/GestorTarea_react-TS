@@ -4,7 +4,7 @@ import { useTareasContext } from "../context/TareasContext"
 
 export const Formulario = () => {
 
-   const {tareas, crearTarea} = useTareasContext()
+    const { tareas, crearTarea, editarTarea, eliminarTarea } = useTareasContext()
 
     const [nombre, setNombre] = useState<string>("")
     const [comienzo, setComienzo] = useState<Date>(new Date())
@@ -28,11 +28,30 @@ export const Formulario = () => {
         }
         console.log(nuevaTarea)
 
-        crearTarea(nuevaTarea)
 
+        if (modo === "Crear") {
+            crearTarea(nuevaTarea)
 
+        } else if (modo === "Editar") {
+            console.log("estamos en moddo EDITAR", nuevaTarea)
+            editarTarea(nuevaTarea)
+
+        }
         resetearformulario()
     }
+
+    const eliminarTareaFormulario = () => {
+        if (seleccionarTareaId) {
+            console.log("Eliminar tarea con id:", seleccionarTareaId)
+            eliminarTarea(seleccionarTareaId)
+            resetearformulario()
+
+        }
+
+    }
+
+
+    //creamos un funcion en el reducer=> pasa al hook useTareas => pasa al context TareasContext => y finalmente al componente Formulario => el formulario envia informacion al reducer => el reducer actualiza el estado con la nueva informacion
 
     const resetearformulario = () => {
         setNombre("")
@@ -41,6 +60,19 @@ export const Formulario = () => {
         setProgreso(0)
         setModo("Crear")
         setSeleccionarTareaId(null)
+    }
+
+    const tareaSeleccionadaEditar = (tareaid: string) => {
+        const tarea = tareas.find((tarea) => tarea.id === tareaid)
+        if (tarea) {
+            setNombre(tarea.nombre)
+            setComienzo(new Date(tarea.comienzo))
+            setFinal(new Date(tarea.final))
+            setProgreso(tarea.progreso)
+            setSeleccionarTareaId(tarea.id)
+            setModo("Editar")
+        }
+
     }
 
     return (
@@ -63,19 +95,18 @@ export const Formulario = () => {
                     <select
                         className="bg-white w-1/4 p-2 border border-gray-300 rounded "
                         value={seleccionarTareaId || ""}
+                        onChange={(e) => tareaSeleccionadaEditar(e.target.value)}
                     >
                         <option value="">-- Selecionar proyecto --</option>
-                        {tareas.map( ( tarea ) => 
-                        <option
-                        key={tarea.id}
-                        value={tarea.id}
-                        >
-                            {tarea.nombre}
+                        {tareas.map((tarea) =>
+                            <option
+                                key={tarea.id}
+                                value={tarea.id}
+                            >
+                                {tarea.nombre}
+                            </option>
 
-                        </option>
-                        
                         )}
-
                     </select>
                 )}
                 {/* Campo de fechas */}
@@ -120,6 +151,7 @@ export const Formulario = () => {
                     <button
                         type="button"
                         className=" bg-red-500 text-white p-2 rounded "
+                        onClick={eliminarTareaFormulario}
                     >
                         Eliminar
                     </button>)}
@@ -128,6 +160,7 @@ export const Formulario = () => {
                     type="button"
                     className="bg-orange-300 p-2 rounded "
                     onClick={() => {
+                        resetearformulario()
                         setModo(modo === "Crear" ? "Editar" : "Crear")
                     }}
                 >

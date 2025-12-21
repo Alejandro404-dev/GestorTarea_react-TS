@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+
+.gantt-container .popup-wrapper {
+    display: none !important;
+   
+}

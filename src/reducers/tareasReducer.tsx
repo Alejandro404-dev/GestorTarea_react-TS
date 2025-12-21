@@ -1,8 +1,9 @@
 import type { Tarea } from "../types/TareasTypes"
 
 type Action =
-    { type: "nueva_tarea"; payload: Tarea }
-
+    { type: "nueva_tarea"; payload: Tarea } |
+    { type: "editar_tarea"; payload: Tarea } |
+    { type: "eliminar_tarea"; payload: string }
 
 
 const initialState: Tarea []= []
@@ -21,7 +22,15 @@ function tareasReducer(state:Tarea[]= initialState, action: Action ): Tarea[] {
         ]
         
     }
+    if (action.type === "editar_tarea") {
+        return state.map((tarea) => tarea.id === action.payload.id ? {...tarea, ...action.payload}:  tarea ) 
+        
+    }
 
+    if (action.type === "eliminar_tarea") {
+        return state.filter((tarea) => tarea.id !== action.payload)
+        
+    }
 
     return state
 }

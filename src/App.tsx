@@ -1,4 +1,5 @@
 import { Formulario } from "./components/Formulario"
+import { GanttTareas } from "./components/GanttTareas"
 
 function App(){
 
@@ -9,6 +10,7 @@ function App(){
         <div className=" w-11/12 mx-auto " >
 
         <Formulario/>
+        <GanttTareas/>
 
         </div>
       </div>
