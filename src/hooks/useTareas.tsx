@@ -7,7 +7,7 @@ export default function useTareas() {
 
   const [tareas, dispatch ] =  useReducer (tareasReducer, [], () => {
     const tareaLocalStorage = localStorage.getItem("tareas")
-    return tareaLocalStorage ? JSON.parse(tareaLocalStorage) : []
+    return tareaLocalStorage ?( JSON.parse(tareaLocalStorage) as Tarea[] ) : []
   }) 
 
   useEffect(() => {  

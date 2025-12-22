@@ -20,7 +20,7 @@ export const Formulario = () => {
         const fechafinalFormateada = final.toISOString().split("T")[0]
 
         const nuevaTarea = {
-            id: seleccionarTareaId || Date.now.toString(),   //usa un id existente o generamos uno nuevo
+            id: seleccionarTareaId || crypto.randomUUID(), // Genera un ID único si no hay uno seleccionado 
             nombre,
             comienzo: fechaComienzoFormateada,
             final: fechafinalFormateada,
@@ -49,8 +49,6 @@ export const Formulario = () => {
         }
 
     }
-
-
     //creamos un funcion en el reducer=> pasa al hook useTareas => pasa al context TareasContext => y finalmente al componente Formulario => el formulario envia informacion al reducer => el reducer actualiza el estado con la nueva informacion
 
     const resetearformulario = () => {

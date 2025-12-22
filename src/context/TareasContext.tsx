@@ -1,8 +1,8 @@
-import { createContext, useContext, type ReactNode,   } from "react"
+import { createContext, useContext, type ReactNode, } from "react"
 import useTareas from "../hooks/useTareas"
 import type { Tarea } from "../types/TareasTypes"
 
-interface TareasContextType{
+interface TareasContextType {
     tareas: Tarea[]
     crearTarea: (tarea: Tarea) => void
     editarTarea: (tarea: Tarea) => void
@@ -10,15 +10,15 @@ interface TareasContextType{
 }
 
 
-const TareasContext = createContext<TareasContextType | undefined>(undefined)
+const TareasContext = createContext<TareasContextType | null>(null)
 
-export const  TareasProvaider =({ children }: {children: ReactNode } ) => {
+export const TareasProvider = ({ children }: { children: ReactNode }) => {
 
     const { tareas, crearTarea, editarTarea, eliminarTarea } = useTareas()
-    return(
+    return (
         <TareasContext.Provider
-            value= {{ tareas,crearTarea, editarTarea, eliminarTarea }}
-        
+            value={{ tareas, crearTarea, editarTarea, eliminarTarea }}
+
         >
             {children}
         </TareasContext.Provider >
@@ -26,12 +26,12 @@ export const  TareasProvaider =({ children }: {children: ReactNode } ) => {
 }
 
 
-export const useTareasContext = () =>{
+export const useTareasContext = () => {
     const context = useContext(TareasContext)
 
     if (!context) {
-        throw new Error("useTareasContext debe ser usado dentri de un provaider")
-        
+        throw new Error("useTareasContext debe ser usado dentro de un provider")
+
     }
     return context
 }
